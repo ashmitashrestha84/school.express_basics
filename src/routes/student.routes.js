@@ -5,7 +5,7 @@ router.get("/", (req, res) => {
     res.status(200).json({
         message: "Students fetched successfully",
         success: true,
-        data: students,
+        data: students,   //empty array
     });
 });
 

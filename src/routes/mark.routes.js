@@ -9,7 +9,7 @@ router.get("/",(req,res)=>{
         message:'Marks of student',
         success:"true",
         marks:([{
-           s_id: s_id,
+           s_id: 1,
            math:100,
            science:89,
            english:60,

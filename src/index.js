@@ -9,17 +9,15 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
-// Home Route
 app.get("/", (req, res) => {
     res.status(200).json({
-        message: "Server is running",
-        success: true,
+        message: "Server is up and running",
     });
 });
 
 app.use("/students", studentRoutes);
-app.use("/marks",markRoutes);
+app.use("/marks", markRoutes);
 
-server.listen(8080,"localhost", () => {
-    console.log(`Server is running on http://localhost:8080`);
+server.listen(8080, "localhost", () => {
+    console.log("Server running at http://localhost:8080");
 });
