@@ -6,12 +6,7 @@ export const getAll=(req,res)=>{
     res.status(200).json({
         message:'Marks of student',
         success:"true",
-        marks:([{
-           s_id: 1,
-           math:100,
-           science:89,
-           english:60,
-        }]),
+        marks:marks,
     })
 }
 
