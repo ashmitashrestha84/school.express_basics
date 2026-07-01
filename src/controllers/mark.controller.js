@@ -10,14 +10,13 @@ export const getAll=(req,res)=>{
     })
 }
 
-export const getbyID=(req,res)=>{
+export const getbyID=(req,res,next)=>{
     const {s_id}=req.params;
     const mark=marks.find((mark)=>mark.s_id===Number(s_id));
     if(!mark){
-        res.status(404).json({
+        next({
             message:'Marks of student failed',
-            success:false,
-            data:null,
+            statusCode:404,
         })
         return;
     }
@@ -44,15 +43,14 @@ export const create=(req,res)=>{
     })
 };
 
-export const update=(req,res)=>{
+export const update=(req,res,next)=>{
     const {s_id}=req.params;
     const {math,science,english}=req.body;
     const index=marks.findIndex((mark)=>mark.s_id=== Number(s_id));
     if(index === -1){
-        res.status(404).json({
+        next({
             message:"user update failed",
-            success: false,
-            data:null,
+            statusCode:404,
         });
         return;
     };
@@ -69,14 +67,13 @@ export const update=(req,res)=>{
     })
 };
 
-export const remove=(req,res)=>{
+export const remove=(req,res,next)=>{
     const {s_id}=req.params;
     const index=marks.findIndex((mark)=> mark.s_id===Number(s_id));
     if(index=== -1){
-    res.status(404).json({
-        message:"user deleted",
-        success:"true",
-        data:null,
+    next({
+        message:"marks deleted",
+        statusCode:404,
     });
     return;
 }
