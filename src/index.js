@@ -18,7 +18,7 @@ app.use((req,res,next)=>{
 })
 app.use((req,res,next)=>{
     console.log("middleware2");
-    if(req.body){
+    if(req.user){
         next();
     }else{
            res.status(401).json({

@@ -15,7 +15,7 @@ export const getbyID=(req,res,next)=>{
     const mark=marks.find((mark)=>mark.s_id===Number(s_id));
     if(!mark){
         next({
-            message:'Marks of student failed',
+            message:'Marks of student fetch failed',
             statusCode:404,
         })
         return;
