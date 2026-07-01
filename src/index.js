@@ -2,6 +2,7 @@ import http from "http";
 import express from "express";
 import studentRoutes from "./routes/student.routes.js";
 import markRoutes from "./routes/mark.routes.js";
+import subjectRoutes from "./routes/subject.routes.js"
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/students", studentRoutes);
 app.use("/marks", markRoutes);
+app.use("/subjects",subjectRoutes);
 
 server.listen(8080, "localhost", () => {
     console.log("Server running at http://localhost:8080");
