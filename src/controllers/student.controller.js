@@ -8,18 +8,15 @@ export const getAll=(req, res) => {
     });
 };
 
-export const getbyID=(req, res) => {
+export const getbyID=(req, res,next) => {
     const { id } = req.params;
 
-    const student = students.find(
-        student => student.id === Number(id)
-    );
+    const student = students.find((student) => student.id === Number(id));
 
     if (!student) {
-        return res.status(404).json({
+        next({
             message: "Student not found",
-            success: false,
-            data: null,
+            statusCode:404,
         });
     }
 
@@ -48,17 +45,14 @@ export const create=(req, res) => {
     });
 };
 
-export const update = (req, res) => {
-    const { id } = req.params;
-    const { name, faculty } = req.body;
-    const index = students.findIndex(
-        student => student.id === Number(id)
-    );
+export const update = (req, res,next) => {
+    const {id} = req.params;
+    const {name, faculty} = req.body;
+    const index = students.findIndex((student) => student.id === Number(id));
     if (index === -1) {
-        return res.status(404).json({
+        next({
             message: "Student not found",
-            success: false,
-            data: null,
+            statusCode:404,
         });
     }
     students[index] = {
@@ -73,14 +67,13 @@ export const update = (req, res) => {
     });
 };
 
-export const remove=(req,res)=>{
+export const remove=(req,res,next)=>{
        const {id}=req.params;
        const index=students.findIndex((student)=> student.id=== Number(id));
        if(index===-1){
-            res.status(404).json({
+           next({
             message:"user not found",
-            success:false,
-            data:null,
+            statusCode:404,
         })
         return;
        }
