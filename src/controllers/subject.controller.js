@@ -9,14 +9,13 @@ export const getAll=((req,res)=>{
     })
 })
 
-export const getbyID=((req,res)=>{
+export const getbyID=((req,res,next)=>{
     const {id}=req.params;
     const subject=subjects.find((subject)=>subject.id===Number(id));
     if(!subject){
-        res.status(404).json({
+        next({
             message:"subject fetched failed",
-            success:false,
-            data:null,
+            statusCode:404,
         })
     }
     res.status(200).json({
@@ -27,13 +26,13 @@ export const getbyID=((req,res)=>{
 })
 
 export const create=((req,res)=>{
-    const{id,sub1,sub2,sub3}=req.body;
-    subjects.push()={
-        id=subjects.length+1,
+    const{sub1,sub2,sub3}=req.body;
+    subjects.push({
+        id:subjects.length+1,
         sub1,
         sub2,
         sub3,
-    }
+    });
     res.status(200).json({
         message:"subject",
         success:true,
@@ -41,16 +40,16 @@ export const create=((req,res)=>{
     })
 })
 
-export const update=((req,res)=>{
+export const update=((req,res,next)=>{
     const {id}=req.params;
-    const {id,sub1,sub2,sub3}=req.body;
+    const {sub1,sub2,sub3}=req.body;
     const index=subjects.findIndex((subject)=>subject.id===Number(id));
-    if(!index){
-        res.status(404).json({
+    if(index===-1){
+        next({
             message:"subject update failed",
-            success:false,
-            data:null,
+            statusCode:404,
         })
+        return;
     }
     subjects[index]={
         ...subjects[index],
@@ -65,15 +64,15 @@ export const update=((req,res)=>{
     })
 });
 
-export const remove =((req,res)=>{
+export const remove =((req,res,next)=>{
     const {id} = req.params;
     const index=subjects.findIndex((subject)=>subject.id===Number(id));
-    if(!index){
-        res.status(404).json({
+    if(index===-1){
+        next({
             message:"subject delete failed",
-            success:false,
-            data:null,
+            statusCode:404,
         })
+        return;
     }
     subjects.splice(index,1);
     res.status(200).json({
