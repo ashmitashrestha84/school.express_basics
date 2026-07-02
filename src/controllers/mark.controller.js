@@ -1,18 +1,46 @@
+import mongoose from "mongoose";
 const marks=[];
+const markSchema=new mongoose.Schema({
+    math:{
+        type:Number,
+        required:true,
+        min:0,
+        max:100,
+    },
+    science:{
+         type:Number,
+        required:true,
+        min:0,
+        max:100,
+    },
+    english:{
+         type:Number,
+        required:true,
+        min:0,
+        max:100,
+    },
+},{timestamps:true});
+const Mark=mongoose.model('mark',markSchema);
 
-export const getAll=(req,res)=>{
+export const getAll=async(req,res,next)=>{
     // const query= req.query;
     // console.log(query);
+    try{
     res.status(200).json({
         message:'Marks of student',
         success:"true",
         marks:marks,
     })
 }
+catch(err){
+    next(err);
+}
+}
 
-export const getbyID=(req,res,next)=>{
+export const getbyID=async(req,res,next)=>{
+    try{
     const {s_id}=req.params;
-    const mark=marks.find((mark)=>mark.s_id===Number(s_id));
+    const mark= await Mark.findOne({s_id});
     if(!mark){
         next({
             message:'Marks of student fetch failed',
@@ -25,52 +53,69 @@ export const getbyID=(req,res,next)=>{
         success:"true",
         marks:mark,
     })
-};
-
-export const create=(req,res)=>{   
+}
+catch(err){
+    next(err);
+}
+}
+export const create=async(req,res,nexy)=>{   
+    try{
     const {math,science,english}=req.body;
-    marks.push({
-        s_id:marks.length+1,
+    const mark = await Mark.create({
         math,
         science,
         english,
-        createdAt: Date.now(),
     });
     res.status(200).json({
         message:'Marks of student created',
         success:"true",
-        marks:marks[marks.length-1],
+        marks:mark,
     })
-};
+}
+catch(err){
+    next(err);
+}
+}
 
-export const update=(req,res,next)=>{
+export const update=async(req,res,next)=>{
+    try{
     const {s_id}=req.params;
     const {math,science,english}=req.body;
-    const index=marks.findIndex((mark)=>mark.s_id=== Number(s_id));
-    if(index === -1){
+    const mark=await Mark.findByIdAndUpdate(
+        s_id,
+    {
+        math,
+        science,
+        english,
+    },
+    {
+    new:true,
+    runValidators:true,
+    })
+    if(!mark){
         next({
             message:"user update failed",
             statusCode:404,
         });
         return;
     };
-    marks[index]={
-        ...marks[index],
-        math,
-        science,
-        english,
-    }
+
     res.status(200).json({
         message:'Marks of student updated',
         success:true,
-        data:marks[index],
+        data:mark,
     })
-};
+}
+catch(err){
+    next(err);
+}
+}
 
-export const remove=(req,res,next)=>{
+export const remove=async(req,res,next)=>{
+    try{
     const {s_id}=req.params;
-    const index=marks.findIndex((mark)=> mark.s_id===Number(s_id));
-    if(index=== -1){
+    const mark= await Mark.findByIdAndDelete(s_id);
+    if(!mark){
     next({
         message:"marks deleted",
         statusCode:404,
@@ -80,7 +125,10 @@ export const remove=(req,res,next)=>{
     res.status(200).json({
         message:'Marks of student deleted',
         success:true,
-        marks:null,
-    })
-    marks.splice(index,1);
+        marks:matk,
+    });
+}
+catch(err){
+    next(err);
+};
 };

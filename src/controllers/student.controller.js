@@ -10,16 +10,13 @@ export const getAll=(req, res) => {
 
 export const getbyID=(req, res,next) => {
     const { id } = req.params;
-
     const student = students.find((student) => student.id === Number(id));
-
     if (!student) {
         next({
             message: "Student not found",
             statusCode:404,
         });
     }
-
     res.status(200).json({
         message: "Student fetched successfully",
         success: true,

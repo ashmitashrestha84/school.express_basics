@@ -3,10 +3,13 @@ import express from "express";
 import studentRoutes from "./routes/student.routes.js";
 import markRoutes from "./routes/mark.routes.js";
 import subjectRoutes from "./routes/subject.routes.js"
+import { connectDatabase } from "./config/db.config.js";
 
 const app = express();
 
 app.use(express.json());
+
+connectDatabase();
 
 const server = http.createServer(app);
 app.use((req,res,next)=>{
